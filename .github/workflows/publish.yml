@@ -1,30 +1,27 @@
 name: deploy-book
 
-# Only run this when the master branch changes
 on:
+  # Trigger the workflow on push to main branch
   push:
     branches:
-    - master
-    # If your git repository has the Jupyter Book within some-subfolder next to
-    # unrelated files, you can make this run only if a file within that specific
-    # folder has been modified.
-    #
-    # paths:
-    # - some-subfolder/**
+      - gh-pages
 
 # This job installs dependencies, build the book, and pushes it to `gh-pages`
 jobs:
-  deploy-book:
-    runs-on: windows-latest
+  build-and-deploy-book:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.8]
     steps:
     - uses: actions/checkout@v2
 
     # Install dependencies
-#     - name: Set up Python 3.7
-#       uses: actions/setup-python@v1
-#       with:
-#         python-version: 3.7
-
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
     - name: Install dependencies
       run: |
         pip install -r requirements.txt
@@ -34,9 +31,9 @@ jobs:
       run: |
         jupyter-book build .
 
-    # Push the book's HTML to github-pages
+    # Deploy the book's HTML to gh-pages branch
     - name: GitHub Pages action
-      uses: chandrusuresh/MyNotes@v0
+      uses: peaceiris/actions-gh-pages@v3.6.1
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./_build/html
