@@ -1,0 +1,528 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Parameter Estimation for Linear Dynamical Systems &#8212; My Machine Learning Notes</title>
+    
+  <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Dynamical Systems" href="DynamicalSystems.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">My Machine Learning Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Intro.html">
+   Welcome to my technical space
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="DensityEstimation.html">
+   Density Estimation
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="LaplaceApproximation.html">
+     The Laplace Approximation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMixtureModels.html">
+     Gaussian Mixture Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="EMAlgorithm.html">
+     Expectation Maximization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="VariationalInference.html">
+     Variational Inference
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="VariationalGMM.html">
+     Variational Mixture of Gaussians
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="DynamicalSystems.html">
+   Dynamical Systems
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Parameter Estimation for Linear Dynamical Systems
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/LinearSystemIdentification_EM.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FLinearSystemIdentification_EM.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/LinearSystemIdentification_EM.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#model">
+   Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#kalman-smoother-estimator">
+   Kalman Smoother Estimator
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#forward-recursion">
+     Forward Recursion
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#prediction">
+       Prediction
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#update">
+       Update
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#backward-recursion">
+     Backward Recursion
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#em-algorithm">
+   EM Algorithm
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#e-step">
+     E Step
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#m-step">
+     M Step
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#output-matrix">
+       Output Matrix:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#output-noise-covariance">
+       Output Noise Covariance:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#state-transition-matrix">
+       State Transition Matrix:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#process-noise-covariance">
+       Process Noise Covariance:
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#initial-state-mean">
+       Initial State Mean
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#initial-state-covariance">
+       Initial State Covariance
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="parameter-estimation-for-linear-dynamical-systems">
+<h1>Parameter Estimation for Linear Dynamical Systems<a class="headerlink" href="#parameter-estimation-for-linear-dynamical-systems" title="Permalink to this headline">¶</a></h1>
+<p>This notebook details an algorithm for estimating the parameters of a linear dynamical system using the Expectation Maximization (EM) algorithm.</p>
+<p>Given a set of observations (measurements), this offline algorithm iterates between the E-step that fixes the current parameters and computes posterior probabilities over the hidden states and an M-step that maximizes the expected log-likelihood of the parameters using the posterior distribution computed in the E-step.</p>
+<p>For linear Gaussian systems, the E-step is the Kalman smoother and the M-step is a linear regression problem.</p>
+<div class="section" id="model">
+<h2>Model<a class="headerlink" href="#model" title="Permalink to this headline">¶</a></h2>
+<p>The state space is defined by the following:
+$<span class="math notranslate nohighlight">\( \begin{align*} x_{t+1} &amp;= A x_t + w_t \\
+y_t &amp;= C x_t + v_t\end{align*}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>w_t\sim \mathcal{N}(0,Q)<span class="math notranslate nohighlight">\( is the process noise and \)</span>v_t\sim \mathcal{N}(0,R)<span class="math notranslate nohighlight">\( is the measurement noise. It is assumed that \)</span>x_t \in \mathbb{R}^k<span class="math notranslate nohighlight">\( and \)</span>y_t \in \mathbb{R}^p$</p>
+<p>It is assumed that only the output <span class="math notranslate nohighlight">\(y_t\)</span> is measured and the state variables and noise are hidden.</p>
+<p>To simplify the analysis, we combine the state variable with the process noise and measurement with its noise into single Gaussian random variables.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align*} P(x_{t+1}|x_t) &amp;= \exp{\{-\frac{1}{2} \left[x_{t+1}-A x_t\right]^T Q^{-1} \left[x_{t+1}-A x_t\right]\}} (2 \pi)^{-\frac{k}{2}}|Q|^{-\frac{1}{2}} \\
+P(y_{t}|x_t) &amp;= \exp{\{-\frac{1}{2} \left[y_{t}-C x_t\right]^T R^{-1} \left[y_{t}-C x_t\right]\}} (2 \pi)^{-\frac{p}{2}}|R|^{-\frac{1}{2}} \end{align*}\end{split}\]</div>
+</div>
+<div class="section" id="kalman-smoother-estimator">
+<h2>Kalman Smoother Estimator<a class="headerlink" href="#kalman-smoother-estimator" title="Permalink to this headline">¶</a></h2>
+<p>The Kalman Smoother Estimator is an algorithm that seeks to estimate the trajectory of the latent state variables given a sequence of measurements. The state evolution and the output equations are modeled by the state space equation described above.</p>
+<p>The optimal estimator <span class="math notranslate nohighlight">\(x_t^n = \mathbb{E}(x_t|y_1,y_2,...,y_n)\)</span> by minimizing the mean squared error <span class="math notranslate nohighlight">\(P_t^n = \mathbb{E}((x_t-x_t^n)^T (x_t-x_t^n) | y_1,y_2,...,y_n)\)</span>.</p>
+<div class="section" id="forward-recursion">
+<h3>Forward Recursion<a class="headerlink" href="#forward-recursion" title="Permalink to this headline">¶</a></h3>
+<p>The forward recursion follows the Kalman Filter equations where the state estimate is updated based on current measurement.</p>
+<div class="section" id="prediction">
+<h4>Prediction<a class="headerlink" href="#prediction" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>Predicted State Estimate: <span class="math notranslate nohighlight">\(x_{t|t-1} = A x_{t-1|t-1}\)</span></p></li>
+<li><p>Predicted Covariance Estimate: <span class="math notranslate nohighlight">\(V_{t|t-1} = A V_{t-1|t-1} A^T + Q \)</span></p></li>
+</ol>
+</div>
+<div class="section" id="update">
+<h4>Update<a class="headerlink" href="#update" title="Permalink to this headline">¶</a></h4>
+<ol class="simple">
+<li><p>Measurement Residual: <span class="math notranslate nohighlight">\(z_t = y_{t} - C x_{t|t-1}\)</span></p></li>
+<li><p>Innovation Covariance: <span class="math notranslate nohighlight">\(S_t = C V_{t|t-1} C^T + R\)</span></p></li>
+<li><p>Optimal Kalman Gain: <span class="math notranslate nohighlight">\(K_t = P_{t|t-1} C^T S_t^{-1}\)</span></p></li>
+<li><p>Updated State Estimate: <span class="math notranslate nohighlight">\(x_{t|t} = x_{t|t-1} + K_t z_t\)</span></p></li>
+<li><p>Covariance Update: <span class="math notranslate nohighlight">\(V_{t|t} = (I-K_t C) V_{t|t-1}\)</span></p></li>
+</ol>
+</div>
+</div>
+<div class="section" id="backward-recursion">
+<h3>Backward Recursion<a class="headerlink" href="#backward-recursion" title="Permalink to this headline">¶</a></h3>
+<p>The backward recursion performs another update to the state estimates based on future measurements.</p>
+<p>Starting from time <span class="math notranslate nohighlight">\(t=n\)</span>, with <span class="math notranslate nohighlight">\(x_{n|n}\)</span> &amp; <span class="math notranslate nohighlight">\(V_{n|n}\)</span> obtained from the Kalman filter:</p>
+<ol class="simple">
+<li><p>Define <span class="math notranslate nohighlight">\(J_{t-1} = V_{t-1|t-1} A V_{t|t-1}^{-1}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_{t-1|n} = x_{t-1|t-1} + J_{t-1}(x_{t|n}-A x_{t-1|t-1})\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(V_{t-1|n} = V_{t-1|t-1} + J_{t-1}(V_{t|n}-V_{t|t-1})J_{t-1}^T\)</span></p></li>
+</ol>
+<hr class="docutils" />
+<p>A useful quantity that is not used in the Kalman smoother, but is used in the EM algorithm is <span class="math notranslate nohighlight">\(V_{t,t-1}\)</span>. This can be computed during the backward recursion for convenience.
+Starting from time <span class="math notranslate nohighlight">\(t=n\)</span>, with <span class="math notranslate nohighlight">\(V_{n,n-1|n} = (I-K_n C)A V_{n-1|n-1}\)</span>:
+$<span class="math notranslate nohighlight">\(V_{i-1,i-2|n} = V_{i-1|i-1}J_{i-2}^T + J_{i-1}(V_{i,i-1|n}-A V_{i-1|i-1})J_{i-2}^T\)</span>$</p>
+</div>
+</div>
+<div class="section" id="em-algorithm">
+<h2>EM Algorithm<a class="headerlink" href="#em-algorithm" title="Permalink to this headline">¶</a></h2>
+<p>Assuming Markov property, and defining <span class="math notranslate nohighlight">\({x} \equiv {x_1,x_2,...,x_n}\)</span> &amp; <span class="math notranslate nohighlight">\({y} \equiv {y_1,y_2,...,y_n}\)</span>
+$<span class="math notranslate nohighlight">\( \begin{align} P(\{x\},\{y\}) = &amp;P(x_0) \prod_{t=0}^{n-1} P(x_{t+1}|x_t) \prod_{t=0}^n P(y_t|x_t) \\
+\Rightarrow \log{P(\{x\},\{y\})} = &amp;-\sum_{t=1}^n{\frac{1}{2} \left[x_{t+1}-A x_t\right]^T Q^{-1} \left[x_{t+1}-A x_t\right]} \\
+ &amp;-\sum_{t=0}^n{\frac{1}{2} \left[y_{t}-C x_t\right]^T R^{-1} \left[y_{t}-C x_t\right]}  \\
+ &amp;-\frac{1}{2} \left[x_{0}- \pi_0\right]^T V_0^{-1} \left[x_{0}- \pi_0\right]  \\
+ &amp;-\frac{n-1}{2}\log{|Q|} - \frac{n}{2}\log{|R|} - \frac{n(p+k)}{2}\log{2 \pi}\end{align}\)</span><span class="math notranslate nohighlight">\(
+ where \)</span>P(x_0) \sim \mathcal{N}(\pi_0,V_0)<span class="math notranslate nohighlight">\( with \)</span>\pi_0<span class="math notranslate nohighlight">\( &amp; \)</span>V_0$ to be estimated.</p>
+<div class="section" id="e-step">
+<h3>E Step<a class="headerlink" href="#e-step" title="Permalink to this headline">¶</a></h3>
+<p>The E-step of the algorithm requires computing the expected log likelihood <span class="math notranslate nohighlight">\(\mathcal{Q} = \mathbb{E}\left[\log P(\{x\},\{y\})|\{y\} \right]\)</span> (Note: Its <span class="math notranslate nohighlight">\(\mathbb{E}\left(\log P(\cdot)|\{y\}\right)\)</span>).</p>
+<p>To compute the above Expectation, we define:
+$<span class="math notranslate nohighlight">\(\begin{align} \hat{x}_t &amp;= \mathbb{E}(x_t|{y}) = x_{t|n}\\
+P_t &amp;= \mathbb{E}(x_t x_t^T|{y}) = V_{t|n} + x_{t|n} x_{t|n}^T \\
+P_{t,t-1} &amp;= \mathbb{E}(x_t x_{t-1}^T|{y}) = V_{t,t-1|n} + x_{t|n} x_{t-1|n}^T \end{align} \)</span>$
+and can be computed as part of the Kalman smoother estimator described above.</p>
+</div>
+<div class="section" id="m-step">
+<h3>M Step<a class="headerlink" href="#m-step" title="Permalink to this headline">¶</a></h3>
+<p>The parameters of this system are <span class="math notranslate nohighlight">\(A\)</span> , <span class="math notranslate nohighlight">\(C\)</span> , <span class="math notranslate nohighlight">\(Q\)</span> , <span class="math notranslate nohighlight">\(R\)</span> , <span class="math notranslate nohighlight">\(\pi_0\)</span> , <span class="math notranslate nohighlight">\(V_0\)</span>. Each of this can be computed by setting the corresponding partial derivative of the expected log likelihood to zero.</p>
+<div class="section" id="output-matrix">
+<h4>Output Matrix:<a class="headerlink" href="#output-matrix" title="Permalink to this headline">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}\frac{\partial \mathcal{Q}}{\partial C} &amp;= \sum_{t=0}^n R^{-1} \left[y_t - C x_t \right] (-x_t)^T \\
+&amp;= \sum_{t=0}^n \Bigg( R^{-1} \left[ y_t x_t^T - C P_t\right]\Bigg) \\
+&amp;= 0 \iff C_{\text{new}} = \Bigg(\sum_{t=0}^n y_t x_t^T \Bigg) \Bigg(\sum_{t=0}^n P_t \Bigg)^{-1}\end{align}\end{split}\]</div>
+</div>
+<div class="section" id="output-noise-covariance">
+<h4>Output Noise Covariance:<a class="headerlink" href="#output-noise-covariance" title="Permalink to this headline">¶</a></h4>
+<p>Here we make use of the following property: <span class="math notranslate nohighlight">\(\frac{\partial{\log|R|}} {\partial{R^{-1}}} = R\)</span>
+$<span class="math notranslate nohighlight">\( \begin{align}\frac{\partial \mathcal{Q}}{\partial R^{-1}} &amp;= \frac{n}{2} R -\sum_{t=0}^n{\left[ \frac{y_t y_t^T}{2} - C x_t y_t^T + \frac{Cx_t x_t^T C^T}{2}\right]} \\ &amp;= \frac{n}{2} R -\sum_{t=0}^n{\left[ \frac{y_t y_t^T}{2} - C x_t y_t^T + \frac{C P_t C^T}{2}\right]}\\ &amp;= \frac{n}{2} R -\sum_{t=0}^n{\left[ \frac{y_t y_t^T}{2} - \frac{C x_t y_t^T}{2} - \frac{C}{2} (x_t y_t^T - P_t C^T)\right]} \\ 
+&amp;= \frac{n}{2} R -\sum_{t=0}^n{\left[ \frac{y_t y_t^T}{2} - \frac{C x_t y_t^T}{2} \right] }\\
+&amp;= 0 \iff R_{\text{new}} =  \frac{1}{n} \left[\sum_{t=0}^n{ \left(y_t y_t^T - C_{\text{new}} x_t y_t^T\right)} \right] \end{align}\)</span>$</p>
+</div>
+<div class="section" id="state-transition-matrix">
+<h4>State Transition Matrix:<a class="headerlink" href="#state-transition-matrix" title="Permalink to this headline">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}\frac{\partial \mathcal{Q}}{\partial A} &amp;= \sum_{t=0}^{n-1} Q^{-1} \left[x_{t+1} - A x_t \right] (-x_t)^T \\
+&amp;= \sum_{t=0}^{n-1} \Bigg( Q^{-1} \left[ x_{t+1} x_t^T - A P_t\right]\Bigg) \\
+&amp;= 0 \iff A_{\text{new}} = \Bigg(\sum_{t=0}^{n-1} P_{t+1,t} \Bigg) \Bigg(\sum_{t=0}^{n-1} P_t \Bigg)^{-1}\end{align}\end{split}\]</div>
+</div>
+<div class="section" id="process-noise-covariance">
+<h4>Process Noise Covariance:<a class="headerlink" href="#process-noise-covariance" title="Permalink to this headline">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}\frac{\partial \mathcal{Q}}{\partial Q^{-1}} &amp;= \frac{n-1}{2}Q -\sum_{t=0}^{n-1}{\left[ \frac{x_{t+1} x_{t+1}^T}{2} - \frac{A x_t x_{t+1}^T}{2}  - \frac{x_{t+1}x_t^T A^T}{2} + \frac{Ax_t x_t^T A^T}{2}\right]} \\ &amp;= \frac{n-1}{2}Q - \frac{1}{2}\sum_{t=0}^{n-1}{\left[ P_{t+1} - A P_{t,t+1}  - P_{t+1,t} A^T + A P_t A^T\right]} \\
+&amp;= \frac{n-1}{2}Q - \frac{1}{2}\sum_{t=0}^{n-1}{\left[ P_{t+1} - A P_{t,t+1}  - (P_{t+1,t} - A P_t) A^T\right]} \\
+&amp;= \frac{n-1}{2}Q - \frac{1}{2}\sum_{t=0}^{n-1}{\left[ P_{t+1} - A P_{t,t+1} \right]} \\
+&amp;= 0 \iff Q_{\text{new}} = \frac{1}{n-1} \left(\sum_{t=0}^{n-1}{P_{t+1} }- A_{\text{new}}\sum_{t=0}^{n-1}{P_{t,t+1}}\right)\end{align}\end{split}\]</div>
+</div>
+<div class="section" id="initial-state-mean">
+<h4>Initial State Mean<a class="headerlink" href="#initial-state-mean" title="Permalink to this headline">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}\frac{\partial \mathcal{Q}}{\partial \pi_0} &amp;= (x_0-\pi_0)V_0^{-1} \\
+&amp;= 0 \iff \pi_{0,\text{new}} = x_0 \end{align}\end{split}\]</div>
+</div>
+<div class="section" id="initial-state-covariance">
+<h4>Initial State Covariance<a class="headerlink" href="#initial-state-covariance" title="Permalink to this headline">¶</a></h4>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}\frac{\partial \mathcal{Q}}{\partial V_{-1}} &amp;= \frac{V_1}{2} - \frac{1}{2}(P_0-x_0\pi_0^T-\pi_0x_p^T+\pi_0\pi_0^T) \\
+&amp;= 0 \iff V_{0,\text{new}} = P_0 - x_0 x_0^T \end{align}\end{split}\]</div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<ol class="simple">
+<li><p>Ghahramani, Z., &amp; Hinton, G. E. (1996a). Parameter estimation for linear dynamical systems (Tech. Rep. No. CRG-TR-96-2). Toronto: Department of Computer Science, University ofToronto. Available <a class="reference external" href="http://www.gatsby.ucl.ac.uk/%C2%BBzoubin/papers/tr-96-2.ps.gz">online</a>.</p></li>
+<li><p>Shumway, R. H., &amp; Stoffer, D. S. (1982). An approach to time series smoothing and forecasting using the EM algorithm. J. Time Series Analysis, 3(4), 253–264.</p></li>
+</ol>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="DynamicalSystems.html" title="previous page">Dynamical Systems</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Chandrasekar Sureshkumar<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>

@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Variational Mixture of Gaussians &#8212; My Machine Learning Notes</title>
+    
+  <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+  <link rel="stylesheet"
+    href="_static/vendor/open-sans_all/1.44.1/index.css">
+  <link rel="stylesheet"
+    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.d3f166471bb80abb5163.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Dynamical Systems" href="DynamicalSystems.html" />
+    <link rel="prev" title="Variational Inference" href="VariationalInference.html" />
+
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+
+
+
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+<a class="navbar-brand text-wrap" href="index.html">
+  
+  
+  <h1 class="site-logo" id="site-title">My Machine Learning Notes</h1>
+  
+</a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form>
+<nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <ul class="nav sidenav_l1">
+ <li class="toctree-l1">
+  <a class="reference internal" href="Intro.html">
+   Welcome to my technical space
+  </a>
+ </li>
+</ul>
+<ul class="current nav sidenav_l1">
+ <li class="toctree-l1 current active collapsible-parent">
+  <a class="reference internal" href="DensityEstimation.html">
+   Density Estimation
+  </a>
+  <ul class="current collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="LaplaceApproximation.html">
+     The Laplace Approximation
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="GaussianMixtureModels.html">
+     Gaussian Mixture Models
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="EMAlgorithm.html">
+     Expectation Maximization
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="VariationalInference.html">
+     Variational Inference
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Variational Mixture of Gaussians
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+ <li class="toctree-l1 collapsible-parent">
+  <a class="reference internal" href="DynamicalSystems.html">
+   Dynamical Systems
+  </a>
+  <ul class="collapse-ul">
+   <li class="toctree-l2">
+    <a class="reference internal" href="LinearSystemIdentification_EM.html">
+     Parameter Estimation for Linear Dynamical Systems
+    </a>
+   </li>
+  </ul>
+  <i class="fas fa-chevron-down">
+  </i>
+ </li>
+</ul>
+
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="row topbar fixed-top container-xl">
+    <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show">
+    </div>
+    <div class="col pl-2 topbar-main">
+        
+        <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+            data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+            aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+            title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+            <i class="fas fa-bars"></i>
+            <i class="fas fa-arrow-left"></i>
+            <i class="fas fa-arrow-up"></i>
+        </button>
+        
+        
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/VariationalGMM.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+        <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FVariationalGMM.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+
+        <!-- Full screen (wrap in <a> to have style consistency -->
+        <a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+                data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+                title="Fullscreen mode"><i
+                    class="fas fa-expand"></i></button></a>
+
+        <!-- Launch buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
+    <div class="dropdown-buttons">
+        
+        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/VariationalGMM.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
+                data-placement="left"><img class="binder-button-logo"
+                    src="_static/images/logo_binder.svg"
+                    alt="Interact on binder">Binder</button></a>
+        
+        
+        
+        
+    </div>
+</div>
+
+    </div>
+
+    <!-- Table of contents -->
+    <div class="d-none d-md-block col-md-2 bd-toc show">
+        
+        <div class="tocsection onthispage pt-5 pb-3">
+            <i class="fas fa-list"></i> Contents
+        </div>
+        <nav id="bd-toc-nav">
+            <ul class="nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#theory">
+   Theory
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#conjugate-priors">
+     Conjugate Priors
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimal-factor-for-q-z">
+     Optimal factor for
+     <span class="math notranslate nohighlight">
+      \(q(Z)\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimal-factor-for-q-pi-mu-lambda">
+     Optimal factor for
+     <span class="math notranslate nohighlight">
+      \(q(\pi,\mu,\Lambda)\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimal-factor-for-q-pi">
+     Optimal factor for
+     <span class="math notranslate nohighlight">
+      \(q(\pi)\)
+     </span>
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#optimal-factor-for-q-mu-lambda">
+     Optimal factor for
+     <span class="math notranslate nohighlight">
+      \(q(\mu,\Lambda)\)
+     </span>
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#example">
+   Example
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#determining-optimal-number-of-clusters">
+     Determining optimal number of clusters
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#references">
+   References
+  </a>
+ </li>
+</ul>
+
+        </nav>
+        
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="variational-mixture-of-gaussians">
+<h1>Variational Mixture of Gaussians<a class="headerlink" href="#variational-mixture-of-gaussians" title="Permalink to this headline">¶</a></h1>
+<p>Gaussian mixture models are widely used to model complex intractable probability distributions using a mixture of Gaussians. We have reviewed GMM and applied a Maximum Likelihood approach to fit a GMM to the Palmer Penguins dataset using the EM algorithm.</p>
+<p>Here we descrive the variational inference algorithm to the same dataset. The following plate model is assumed for the variational approximation.
+The following plate model in Fig 10.5 from [1] is assumed.</p>
+<p><img alt="image.png" src="_images/GMM_VA_GraphicalModel.png" /></p>
+<p>The variational approach resolves many of the limitations of the MLE approach.</p>
+<ul class="simple">
+<li><p>Variational approach uses a Bayesian model that enables determining parameter uncertainty</p></li>
+<li><p>Prevents over-fitting of data to model</p></li>
+<li><p>The cardinality/dimensionality of the latent variable can be determined or inferred by the algorithm.</p></li>
+</ul>
+<div class="section" id="theory">
+<h2>Theory<a class="headerlink" href="#theory" title="Permalink to this headline">¶</a></h2>
+<p>Given a dataset for random variable <span class="math notranslate nohighlight">\(x\)</span>, we introduce a <span class="math notranslate nohighlight">\(K\)</span> dimensional binary random variable <span class="math notranslate nohighlight">\(z\)</span> having a 1-of-<span class="math notranslate nohighlight">\(K\)</span> representation in which a particular element <span class="math notranslate nohighlight">\(z_k = 1\)</span>  with <span class="math notranslate nohighlight">\(z_i = 0 \text{ } \forall i\ne k\)</span> i.e., <span class="math notranslate nohighlight">\(\sum{z_k} = 1\)</span>. Assume the dataset has <span class="math notranslate nohighlight">\(N\)</span> points. The dataset of observed and latent variables are denoted by <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Z\)</span> respectively.</p>
+<p>The marginal distribution <span class="math notranslate nohighlight">\(p(Z,X)\)</span> is defined as <span class="math notranslate nohighlight">\( p(Z,X) = p(X|Z)\cdot p(Z)\)</span>.</p>
+<p>If <span class="math notranslate nohighlight">\(p(z_k = 1) = \pi_k\)</span> and <span class="math notranslate nohighlight">\(p(x|z_k=1) = \mathcal{N}(x|\mu_k,\Lambda_k^{-1})\)</span> then, $<span class="math notranslate nohighlight">\(\begin{align} p(Z) &amp;= \prod_{n=1}^N \prod_{k=1}^K \pi_k^{z_{nk}} \\
+p(X|Z) &amp;= \prod_{n=1}^N \prod_{k=1}^K \Bigg(\mathcal{N}(x|\mu_k,\Lambda_k^{-1})\Bigg)^{z_{nk}} \end{align}\)</span>$</p>
+<p>The marginal distribution of <span class="math notranslate nohighlight">\(X\)</span> is therefore,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}  p(X) &amp;= \sum_{z,\pi,\mu,\Lambda} p(X,Z,\pi,\mu,\Lambda) \\
+&amp;= \sum_{z,\pi,\mu,\Lambda} p(X|Z,\mu,\Lambda) p(Z|\pi) p(\pi) p(\mu|\Lambda) p(\Lambda) \end{align}\end{split}\]</div>
+<p>We now consider a variational distribution that factorizes the latent variables and parameters as:</p>
+<div class="math notranslate nohighlight">
+\[ q(Z,\pi,\mu,\Lambda) = q(Z)q(\pi,\mu,\Lambda)\]</div>
+<div class="section" id="conjugate-priors">
+<h3>Conjugate Priors<a class="headerlink" href="#conjugate-priors" title="Permalink to this headline">¶</a></h3>
+<p>We introduce conjugate priors for <span class="math notranslate nohighlight">\(\pi\)</span>,<span class="math notranslate nohighlight">\(\mu\)</span>,<span class="math notranslate nohighlight">\(\Lambda\)</span> as follows.</p>
+<p>For <span class="math notranslate nohighlight">\(\pi\)</span> we choose a Dirichlet prior with the same parameter <span class="math notranslate nohighlight">\(\alpha_0\)</span> for each component.
+$<span class="math notranslate nohighlight">\( p(\pi) = \text{Dir}(\pi|\alpha_0) = C(\alpha_0)\prod_{k=1}^K{\pi_k^{\alpha_0-1}}\)</span><span class="math notranslate nohighlight">\(
+where \)</span>C(\alpha_0)$ is the normalization constant.</p>
+<p>For <span class="math notranslate nohighlight">\(\mu\)</span> and <span class="math notranslate nohighlight">\(\Lambda\)</span>, a Gaussian-Wishart prior is chosen for the mean and precision of each component.
+$<span class="math notranslate nohighlight">\( \begin{align} p(\mu,\Lambda) &amp;= p(\mu|\Lambda) p(\Lambda) \\
+&amp;= \prod_{k=1}^K\mathcal{N}\Big(\mu_k|m_0,(\beta_0\Lambda_k)^{-1})\Big) \mathcal{W}(\Lambda_k|W_0,\nu_0) \end{align}\)</span>$</p>
+</div>
+<div class="section" id="optimal-factor-for-q-z">
+<h3>Optimal factor for <span class="math notranslate nohighlight">\(q(Z)\)</span><a class="headerlink" href="#optimal-factor-for-q-z" title="Permalink to this headline">¶</a></h3>
+<p>The update equation for the latent variable is given by,
+$<span class="math notranslate nohighlight">\( \begin{align} \ln{q^*(Z)} &amp;= \mathbb{E}_{\pi,\mu,\Lambda}\Big[ \ln{p(X,Z,\pi,\mu,\Lambda}\Big] \\
+&amp;= \mathbb{E}_{\pi,\mu,\Lambda}\Big[\ln\Big\{p(X|Z,\mu,\Lambda) p(Z|\pi) p(\pi) p(\mu|\Lambda) p(\Lambda) \Big\}\Big]\end{align}\)</span>$</p>
+<p>By combining the terms not including <span class="math notranslate nohighlight">\(Z\)</span> in the above expression into a constant term,
+$<span class="math notranslate nohighlight">\( \begin{align} \ln{q^*(Z)} &amp;= \mathbb{E}_{\pi}\Big[\ln p(Z|\pi)\Big] + \mathbb{E}_{\mu,\Lambda}\Big[\ln{p(X|Z,\pi,\mu)}\Big] + \text{const.}\end{align}\)</span>$</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}\mathbb{E}_{\pi}\Big[\ln p(Z|\pi)\Big] &amp;= \mathbb{E}_{\pi}\Big[\sum_{n=1}^N{\sum_{k=1}^K{z_{nk}\pi_k}}\Big] \\ 
+&amp;= \sum_{n=1}^N{\sum_{k=1}^K{z_{nk}\mathbb{E}\Big[\pi_k\Big]}} \end{align}\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align}\mathbb{E}_{\mu,\Lambda}\Big[\ln{p(X|Z,\pi,\mu)}\Big] &amp;= \mathbb{E}_{\mu,\Lambda}\Bigg[\sum_{n=1}^N{\sum_{k=1}^K{z_{nk}\Big(-\frac{D}{2}\ln(2\pi) + \frac{1}{2}\ln{|\Lambda_k|} \\
+- \frac{1}{2}(x_n-\mu_k)^T \Lambda_k (x_n-\mu_k)\Big)\Bigg]}} \\ 
+&amp;= \sum_{n=1}^N{\sum_{k=1}^K{z_{nk}\Bigg(\frac{1}{2}\mathbb{E}\Big[\ln{|\Lambda_k|}\Big] - \frac{D}{2}\ln(2\pi) \\
+- \frac{1}{2}\mathbb{E}\Big[(x_n-\mu_k)^T \Lambda_k (x_n-\mu_k)\Big]\Bigg)}} \end{align}\end{split}\]</div>
+<p>Substituting the above 2 expressions above,</p>
+<div class="math notranslate nohighlight">
+\[ \begin{align} \ln{q^*(Z)} &amp;= \sum_{n=1}^N{\sum_{k=1}^K{z_{nk} \rho_{nk}}} + \text{const.}\end{align}\]</div>
+<p>where <span class="math notranslate nohighlight">\(\rho_{nk}\)</span> is given by,
+$<span class="math notranslate nohighlight">\( \rho_{nk} = \mathbb{E}\Big[\pi_k\Big] + \frac{1}{2}\mathbb{E}\Big[\ln{|\Lambda_k|}\Big] - \frac{D}{2}\ln(2\pi) - \frac{1}{2}\mathbb{E}\Big[(x_n-\mu_k)^T \Lambda_k (x_n-\mu_k)\Big]\)</span>$</p>
+<p>The distribution <span class="math notranslate nohighlight">\(q^*(Z)\)</span> is given by,</p>
+<div class="math notranslate nohighlight">
+\[ \Rightarrow q^*(Z) = \prod_{n=1}^N{\prod_{k=1}^K{r_{nk}^{z_{nk}}}}\]</div>
+<p>where <span class="math notranslate nohighlight">\(r_{nk}\)</span> are the responsibilities with
+$<span class="math notranslate nohighlight">\( r_{nk} = \frac{\rho_{nk}}{\sum_{j=1}^K\rho_{nj}}\)</span>$</p>
+<p>For the discrete distribution <span class="math notranslate nohighlight">\(q^*(Z)\)</span>, we have <span class="math notranslate nohighlight">\(\mathbb{E}\Big[q(z_{nk})\Big] = r_{nk}\)</span></p>
+<p>The following provide expressions for the terms in the above expression for <span class="math notranslate nohighlight">\(\rho_{nk}\)</span>.
+$<span class="math notranslate nohighlight">\(\begin{align} \mathbb{E}\Big[(x_n-\mu_k)^T \Lambda_k (x_n-\mu_k)\Big] &amp;= D \beta_k^{-1} + \nu_k \mathbb{E}\Big[(x_n-m_k)^T W_k (x_n-m_k)\Big] \\ \mathbb{E}\Big[\ln{|\Lambda_k|}\Big] &amp;= \sum_{i=1}^D \psi\Bigg( \frac{\nu_k+1-i}{2}\Bigg) + D \ln 2 + \ln |W_k| \\
+\mathbb{E}\Big[\pi_k\Big] &amp;= \psi(\alpha_k) - \psi(\hat{\alpha}) \end{align}\)</span>$</p>
+<p>where <span class="math notranslate nohighlight">\(\psi(\cdot)\)</span> is the digamma function and <span class="math notranslate nohighlight">\(\hat{\alpha} = \sum_k \alpha_k\)</span>.</p>
+</div>
+<div class="section" id="optimal-factor-for-q-pi-mu-lambda">
+<h3>Optimal factor for <span class="math notranslate nohighlight">\(q(\pi,\mu,\Lambda)\)</span><a class="headerlink" href="#optimal-factor-for-q-pi-mu-lambda" title="Permalink to this headline">¶</a></h3>
+<p>Given the expression for <span class="math notranslate nohighlight">\(q^*(Z)\)</span> and <span class="math notranslate nohighlight">\(r_{nk}\)</span>, the following quantities are defined.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align} N_k &amp;= \sum_{n=1}^N{r_{nk}} \\
+\bar{x}_k&amp;= \frac{1}{N_k}\sum_{n=1}^N{r_{nk}x_n}\\
+S_k &amp;= \frac{1}{N_k}\sum_{n=1}^N{r_{nk}(x_n-\bar{x}_k)(x_n-\bar{x}_k)^T} \end{align}\end{split}\]</div>
+<p>Now the optimal factor <span class="math notranslate nohighlight">\(q(\pi,\mu,\Lambda)\)</span> is given by</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align} \ln{q^*(\pi,\mu,\Lambda)} &amp;=  \mathbb{E}_{Z}\Big[\ln\Big\{p(X|Z,\mu,\Lambda) p(Z|\pi) p(\pi) p(\mu|\Lambda) p(\Lambda) \Big\}\Big] \\
+&amp;= \ln{p(\pi)} + \mathbb{E}_{Z}\Bigg[\sum_{k=1}^K{\ln p(\mu_k,\Lambda_k)} + \ln p(Z|\pi) \\
+&amp;+ \sum_{n=1}^N{\sum_{k=1}^K{z_{nk}\ln \mathcal{N}(x_n|\mu_k,\Lambda_k)}} \Bigg] + \text{const.} \\
+&amp;= \ln{p(\pi)} + \mathbb{E}_{Z}\Big[\ln p(Z|\pi)\Big] + \sum_{k=1}^K{\ln p(\mu_k,\Lambda_k)}  \\
+&amp;+ \sum_{n=1}^N{\sum_{k=1}^K{\mathbb{E}_{Z}\Big[z_{nk}\Big]\ln \mathcal{N}(x_n|\mu_k,\Lambda_k)}} + \text{const.}\end{align}\end{split}\]</div>
+<p>The expression above factorizes into terms involving just <span class="math notranslate nohighlight">\(\pi\)</span> and <span class="math notranslate nohighlight">\(\mu,\Lambda\)</span> thereby implying independence of these variables. Note that this result is not based on any prior assumption but a direct result of the model.</p>
+<div class="math notranslate nohighlight">
+\[\begin{split} \begin{align} q^*(\pi,\mu,\Lambda) &amp;= q(\pi) \prod_{k=1}^K{q(\mu,\Lambda)} \\
+\text{where}\quad \ln q^*(\pi) &amp;= \ln{p(\pi)} + \mathbb{E}_{Z}\Big[\ln p(Z|\pi)\Big]  + \text{const.}\\
+\text{and}\quad \ln q^*(\mu,\Lambda) &amp;= \sum_{k=1}^K{\ln p(\mu_k,\Lambda_k)} 
++ \sum_{n=1}^N{\sum_{k=1}^K{\mathbb{E}_{Z}\Big[z_{nk}\Big]\ln \mathcal{N}(x_n|\mu_k,\Lambda_k)}} + \text{const.}\end{align}\end{split}\]</div>
+</div>
+<div class="section" id="optimal-factor-for-q-pi">
+<h3>Optimal factor for <span class="math notranslate nohighlight">\(q(\pi)\)</span><a class="headerlink" href="#optimal-factor-for-q-pi" title="Permalink to this headline">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align} \ln q^*(\pi) &amp;= \ln{p(\pi)} + \mathbb{E}_{Z}\Big[\ln p(Z|\pi)\Big]  + \text{const.} \\
+&amp;= (\alpha_0-1)\sum_{k=1}^K{\pi_k} + \sum_{n=1}^N{\sum_{k=1}^K{\mathbb{E}_{Z}[z_{nk}]\pi_k}} + \text{const.} \\
+&amp;= (\alpha_0-1)\sum_{k=1}^K{\pi_k} + \sum_{n=1}^N{\sum_{k=1}^K{r_{nk}\pi_k}} + \text{const.} \\
+&amp;= (\alpha_0-1)\sum_{k=1}^K{\pi_k} + \sum_{k=1}^K{N_k\pi_k} + \text{const.} \\ &amp;= (\alpha_0+N_k-1)\sum_{k=1}^K{\pi_k} + \text{const.} \\ \end{align}\end{split}\]</div>
+<p>The posterior <span class="math notranslate nohighlight">\(q^*(\pi)\)</span> is also a Dirichlet distribution with parameter <span class="math notranslate nohighlight">\(\alpha_0+N_k\)</span>. i.e. <span class="math notranslate nohighlight">\(q^*(\pi) = \text{Dir}(\pi|\alpha_0+N_k)\)</span></p>
+</div>
+<div class="section" id="optimal-factor-for-q-mu-lambda">
+<h3>Optimal factor for <span class="math notranslate nohighlight">\(q(\mu,\Lambda)\)</span><a class="headerlink" href="#optimal-factor-for-q-mu-lambda" title="Permalink to this headline">¶</a></h3>
+<p>The derivation for the parameters of the posterior distribution for <span class="math notranslate nohighlight">\(q(\mu,\Lambda)\)</span> is very involved, so only the results are presented here. More details can be found in section 10.2.1. in [1].</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{align} q(\mu_k,\Lambda_k) &amp;= \mathcal{N}\Big(\mu_k|m_k,(\beta_k \Lambda_k)^{-1}\Big)\cdot \mathcal{W}(\Lambda_k|W_k,\nu_k) \\
+\text{where} \quad \beta_k &amp;= \beta_0 + N_k \\
+m_k &amp;= \frac{1}{\beta_k}(\beta_0 m_0 + N_k \bar{x}_k) \\
+W_k^{-1} &amp;= W_0^{-1} + N_k S_k + \frac{\beta_0 N_k}{\beta_0+N_k}(\bar{x}_k-m_0)(\bar{x}_k-m_0)^T \\
+\nu_k &amp;= \nu_0 + N_k\end{align}\end{split}\]</div>
+</div>
+</div>
+<div class="section" id="example">
+<h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
+<p>The palmer penguins dataset released by [2] and obtained from [3] is used as an example. Two features - Flipper Length &amp; Culmen Length are used as the features to cluster the dataset. We set K = 6 and demonstrate that 3 of these components are redundant while correctly identifying the 3 correct categories of penguins - Adelie, Chinstrap and Gentoo. This same dataset was used in the GMM section. The dataset is plotted below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">multivariate_normal</span> <span class="k">as</span> <span class="n">gaussian</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib.image</span> <span class="k">as</span> <span class="nn">mpimg</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Ellipse</span>
+<span class="kn">import</span> <span class="nn">matplotlib.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
+<span class="kn">import</span> <span class="nn">matplotlib.colors</span> <span class="k">as</span> <span class="nn">mcolors</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">digamma</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">multivariate_normal</span> <span class="k">as</span> <span class="n">gaussian</span>    
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">wishart</span><span class="p">,</span><span class="n">dirichlet</span>
+<span class="kn">from</span> <span class="nn">scipy.special</span> <span class="k">import</span> <span class="n">softmax</span> <span class="k">as</span> <span class="n">softmax</span>
+
+<span class="k">def</span> <span class="nf">getCSV</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
+    <span class="n">download</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span><span class="o">.</span><span class="n">content</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">(</span><span class="n">download</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">df</span>
+
+<span class="n">file</span> <span class="o">=</span> <span class="s2">&quot;https://raw.githubusercontent.com/mcnakhaee/palmerpenguins/master/palmerpenguins/data/penguins-raw.csv&quot;</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">getCSV</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">txt_labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">])</span>
+<span class="n">lbl</span> <span class="o">=</span> <span class="n">txt_labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">df_data</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">txt_labels</span><span class="p">)</span>
+<span class="n">img</span> <span class="o">=</span> <span class="n">mpimg</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s1">&#39;img/lter_penguins.png&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;off&#39;</span><span class="p">)</span>
+<span class="n">color</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;tomato&#39;</span><span class="p">,</span><span class="s1">&#39;mediumorchid&#39;</span><span class="p">,</span><span class="s1">&#39;seagreen&#39;</span><span class="p">,</span><span class="s1">&#39;aqua&#39;</span><span class="p">,</span><span class="s1">&#39;black&#39;</span><span class="p">,</span><span class="s1">&#39;magenta&#39;</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span><span class="n">lbl</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">txt_labels</span><span class="p">):</span>
+    <span class="n">df_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Species&#39;</span><span class="p">]</span> <span class="o">==</span>  <span class="n">lbl</span><span class="p">]</span>
+<span class="c1">#     print(df_data[i].columns)</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;Flipper Length (mm)&#39;</span><span class="p">],</span><span class="n">df_data</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="s1">&#39;Culmen Length (mm)&#39;</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+<span class="c1"># ax[1].axis(&#39;off&#39;)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Flipper Length&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Culmen Length&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/VariationalGMM_9_0.png" src="_images/VariationalGMM_9_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Number of classes</span>
+<span class="n">K</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">flp_len</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Flipper Length (mm)&#39;</span><span class="p">])</span>
+<span class="n">clm_len</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Culmen Length (mm)&#39;</span><span class="p">])</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Flipper Length (mm)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Culmen Length (mm)&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">notna</span><span class="p">()]</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Flipper Length (mm)&#39;</span><span class="p">],</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;Culmen Length (mm)&#39;</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="c1"># print(data)</span>
+
+<span class="n">x_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">flp_len</span><span class="p">],[</span><span class="n">clm_len</span><span class="p">]])</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">data</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">x_mean</span><span class="p">,(</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">d</span><span class="p">,</span><span class="n">d</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">prec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">cov</span><span class="p">)</span><span class="c1">#</span>
+<span class="c1">## Init</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">m_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[:,:</span><span class="n">pts</span><span class="o">//</span><span class="n">K</span><span class="p">],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">prev</span> <span class="o">=</span> <span class="n">pts</span><span class="o">//</span><span class="n">K</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">m_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">m_init</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">data</span><span class="p">[:,</span><span class="n">prev</span><span class="o">+</span><span class="mi">1</span><span class="p">:</span><span class="n">prev</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">pts</span><span class="o">//</span><span class="n">K</span><span class="p">)],</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="n">prev</span> <span class="o">=</span> <span class="n">prev</span><span class="o">+</span><span class="mi">1</span><span class="o">+</span><span class="p">(</span><span class="n">pts</span><span class="o">//</span><span class="n">K</span><span class="p">)</span>
+<span class="n">m_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">m_init</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">m_init</span><span class="p">)</span>
+<span class="c1"># m_init = data[:,-K:]</span>
+<span class="c1"># m_init = data[:,10:10+K]</span>
+<span class="c1"># m_init = data[:,:K]</span>
+<span class="c1"># m_init = np.matrix(np.c_[data[:,0],data[:,200],data[:,-1]])</span>
+<span class="c1"># m_init = data[:,:K]</span>
+<span class="c1"># m_init = np.matrix(np.random.randn(2,K))</span>
+<span class="n">beta_init</span>  <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)])</span>
+<span class="n">W_init</span>  <span class="o">=</span> <span class="p">[</span><span class="n">prec</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span>
+<span class="n">nu_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">2.</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)])</span>
+<span class="n">alpha_init</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.001</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[[186.35294118 188.55882353 191.85294118 192.88235294 206.82352941
+  215.82352941 219.58823529 214.38235294 194.38235294 197.51851852]
+ [ 38.64411765  38.92941176  38.51764706  39.44117647  43.96176471
+   46.76470588  48.07058824  48.46176471  48.84411765  48.88518519]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">## Variational Approximation</span>
+<span class="k">def</span> <span class="nf">getZ</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">alpha</span><span class="p">):</span>
+    <span class="n">dig_alpha</span> <span class="o">=</span> <span class="n">digamma</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+    <span class="n">D</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">N</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">K</span><span class="p">))</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">N</span><span class="p">,</span><span class="n">K</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">E_ln_pi_k</span>  <span class="o">=</span> <span class="n">digamma</span><span class="p">(</span><span class="n">alpha</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="o">-</span> <span class="n">dig_alpha</span>
+        
+        <span class="n">E_ln_sig_k</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">D</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">E_ln_sig_k</span> <span class="o">=</span> <span class="n">E_ln_sig_k</span> <span class="o">+</span> <span class="n">digamma</span><span class="p">(</span><span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">nu</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="o">-</span><span class="n">i</span><span class="p">))</span>
+        
+        <span class="n">tmpSum</span> <span class="o">=</span> <span class="n">E_ln_pi_k</span> <span class="o">+</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">E_ln_sig_k</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="nb">float</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+            <span class="n">dx</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="n">n</span><span class="p">]</span> <span class="o">-</span> <span class="n">m</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">E_mu_sig</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="o">/</span><span class="n">beta</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">nu</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dx</span><span class="o">.</span><span class="n">T</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">dx</span><span class="p">))</span>
+            <span class="n">rho</span><span class="p">[</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tmpSum</span> <span class="o">-</span> <span class="mf">0.5</span><span class="o">*</span><span class="n">E_mu_sig</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+        <span class="n">rho</span><span class="p">[</span><span class="n">n</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">softmax</span><span class="p">(</span><span class="n">rho</span><span class="p">[</span><span class="n">n</span><span class="p">,:])</span>
+    <span class="k">return</span> <span class="n">rho</span>
+
+<span class="k">def</span> <span class="nf">getHelperVariables</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">r</span><span class="p">):</span>
+    <span class="n">Nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">matrix</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">K</span><span class="p">)))</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span><span class="p">[</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">X</span><span class="p">[:,</span><span class="n">n</span><span class="p">]</span>
+    
+    <span class="n">S</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+                <span class="n">dx</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span><span class="n">n</span><span class="p">]</span><span class="o">-</span><span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span>
+                <span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">r</span><span class="p">[</span><span class="n">n</span><span class="p">,</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dx</span><span class="o">.</span><span class="n">T</span><span class="p">)</span><span class="o">/</span><span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span>
+            
+<span class="k">def</span> <span class="nf">getMu</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span><span class="n">beta0</span><span class="p">,</span><span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">beta0</span><span class="o">+</span><span class="n">Nk</span>
+<span class="c1">#     m = (beta0*m0 + Nk*x)/beta</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">beta_init</span><span class="p">,</span><span class="n">m_init</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">))</span><span class="o">/</span><span class="n">beta</span>
+    <span class="k">return</span> <span class="n">m</span><span class="p">,</span><span class="n">beta</span>
+        
+<span class="k">def</span> <span class="nf">getPi</span><span class="p">(</span><span class="n">alpha0</span><span class="p">,</span><span class="n">Nk</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">alpha0</span><span class="o">+</span><span class="n">Nk</span>
+    
+<span class="k">def</span> <span class="nf">getSigma</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span><span class="n">beta0</span><span class="p">,</span><span class="n">W0_inv</span><span class="p">,</span><span class="n">nu0</span><span class="p">,</span><span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span><span class="p">):</span>
+    <span class="n">nu</span> <span class="o">=</span> <span class="n">nu0</span><span class="o">+</span><span class="n">Nk</span>
+    <span class="n">Wk</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">)]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="n">m0</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">Wk_inv</span> <span class="o">=</span> <span class="n">W0_inv</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">+</span> <span class="n">beta0</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="p">(</span><span class="n">beta0</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">+</span><span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">])</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">dx</span><span class="p">,</span><span class="n">dx</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+        <span class="n">Wk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Wk_inv</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Wk</span><span class="p">,</span><span class="n">nu</span>
+
+<span class="k">def</span> <span class="nf">getLogLikelihood</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">alpha</span><span class="p">):</span>
+    <span class="n">pi</span> <span class="o">=</span> <span class="n">Nk</span><span class="o">/</span><span class="nb">float</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">logLikelihood</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="mf">1E-20</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">pi</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="n">pi_new</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">pi</span><span class="p">,</span><span class="n">eps</span><span class="p">)</span>
+    <span class="n">pi_new</span> <span class="o">=</span> <span class="n">pi_new</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">pi_new</span><span class="p">)</span>
+    <span class="n">logLikelihood</span> <span class="o">=</span> <span class="mi">0</span><span class="c1">#dirichlet.logpdf(pi_new,alpha)</span>
+    <span class="n">pi1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="n">alpha1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">pi</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="n">pi1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pi1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pi</span><span class="p">[</span><span class="n">k</span><span class="p">]]))</span>
+        <span class="n">alpha1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alpha1</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">alpha</span><span class="p">[</span><span class="n">k</span><span class="p">]]))</span>
+        <span class="n">prec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">cv_mat</span> <span class="o">=</span> <span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">/</span><span class="n">beta</span><span class="p">[</span><span class="n">k</span><span class="p">]</span>
+        <span class="n">log_mu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">gaussian</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]),</span><span class="n">mean</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">m</span><span class="p">[:,</span><span class="n">k</span><span class="p">]),</span><span class="n">cov</span><span class="o">=</span><span class="n">cv_mat</span><span class="p">))</span>
+        <span class="n">log_sig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">wishart</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">prec</span><span class="p">,</span><span class="n">df</span><span class="o">=</span><span class="n">nu</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">scale</span><span class="o">=</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">]))</span>
+        <span class="n">logLikelihood</span> <span class="o">=</span> <span class="n">logLikelihood</span> <span class="o">+</span> <span class="n">log_mu</span> <span class="o">+</span> <span class="n">log_sig</span>
+        
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+        <span class="n">prob</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+<span class="c1">#             if np.linalg.det(S[k]) == 0:</span>
+            <span class="k">if</span> <span class="n">pi</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">prob</span> <span class="o">=</span> <span class="n">prob</span> <span class="o">+</span> <span class="n">pi</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">*</span><span class="n">gaussian</span><span class="o">.</span><span class="n">pdf</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">X</span><span class="p">[:,</span><span class="n">n</span><span class="p">]),</span><span class="n">mean</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ravel</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]),</span><span class="n">cov</span><span class="o">=</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+        <span class="n">logLikelihood</span> <span class="o">=</span> <span class="n">logLikelihood</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">prob</span><span class="p">)</span>
+    <span class="n">logLikelihood</span> <span class="o">=</span> <span class="n">logLikelihood</span> <span class="o">+</span> <span class="n">dirichlet</span><span class="o">.</span><span class="n">logpdf</span><span class="p">(</span><span class="n">pi1</span><span class="p">,</span><span class="n">alpha1</span><span class="p">)</span><span class="c1">#dirichlet.logpdf(pi_new,alpha)#</span>
+    <span class="k">return</span> <span class="n">logLikelihood</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">VariationalGMM</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">m0</span><span class="p">,</span><span class="n">beta0</span><span class="p">,</span><span class="n">W0</span><span class="p">,</span><span class="n">nu0</span><span class="p">,</span><span class="n">alpha0</span><span class="p">,</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">tol</span><span class="o">=</span><span class="mf">1E-6</span><span class="p">):</span>
+    <span class="n">m1</span>    <span class="o">=</span> <span class="n">m0</span>
+    <span class="n">beta1</span> <span class="o">=</span> <span class="n">beta0</span>
+    <span class="n">W1</span>    <span class="o">=</span> <span class="n">W0</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="n">nu1</span>   <span class="o">=</span> <span class="n">nu0</span>
+    <span class="n">alpha1</span><span class="o">=</span><span class="n">alpha0</span>
+
+    <span class="n">W0_inv</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">W0_inv</span> <span class="o">+=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">W0</span><span class="p">[</span><span class="n">k</span><span class="p">])]</span>
+
+    <span class="n">c</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">logLikelihood</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="n">max_iter</span><span class="p">:</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">getZ</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">m1</span><span class="p">,</span><span class="n">beta1</span><span class="p">,</span><span class="n">W1</span><span class="p">,</span><span class="n">nu1</span><span class="p">,</span><span class="n">alpha1</span><span class="p">)</span>
+
+        <span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span> <span class="o">=</span> <span class="n">getHelperVariables</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>   
+        
+        <span class="n">m</span><span class="p">,</span><span class="n">beta</span> <span class="o">=</span> <span class="n">getMu</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span><span class="n">beta0</span><span class="p">,</span><span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">)</span>
+
+        <span class="n">alpha</span> <span class="o">=</span> <span class="n">getPi</span><span class="p">(</span><span class="n">alpha0</span><span class="p">,</span><span class="n">Nk</span><span class="p">)</span>
+
+        <span class="n">W</span><span class="p">,</span><span class="n">nu</span> <span class="o">=</span> <span class="n">getSigma</span><span class="p">(</span><span class="n">m0</span><span class="p">,</span><span class="n">beta0</span><span class="p">,</span><span class="n">W0_inv</span><span class="p">,</span><span class="n">nu0</span><span class="p">,</span><span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span><span class="p">)</span>
+        
+        <span class="n">logLikelihood</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">getLogLikelihood</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="n">r</span><span class="p">,</span><span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">alpha</span><span class="p">))</span>
+<span class="c1">#         print(c,logLikelihood[-1],np.round(Nk,3))</span>
+        <span class="n">max_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">beta</span><span class="o">-</span><span class="n">beta1</span><span class="p">))</span>
+        <span class="n">max_diff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_diff</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">alpha</span><span class="o">-</span><span class="n">alpha1</span><span class="p">)))</span>
+        <span class="n">max_diff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_diff</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">nu</span><span class="o">-</span><span class="n">nu1</span><span class="p">)))</span>
+        <span class="n">max_diff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_diff</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">m</span><span class="o">-</span><span class="n">m1</span><span class="p">)))</span>
+        <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+            <span class="n">max_diff</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">max_diff</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="n">W1</span><span class="p">[</span><span class="n">k</span><span class="p">])))</span>
+        <span class="n">m1</span>    <span class="o">=</span> <span class="n">m</span>
+        <span class="n">beta1</span> <span class="o">=</span> <span class="n">beta</span>
+        <span class="n">W1</span>    <span class="o">=</span> <span class="n">W</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">nu1</span>   <span class="o">=</span> <span class="n">nu</span>
+        <span class="n">alpha1</span><span class="o">=</span><span class="n">alpha</span>
+        <span class="k">if</span> <span class="n">max_diff</span> <span class="o">&lt;=</span> <span class="n">tol</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Algorithm converged after iteration:&quot;</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">+</span><span class="mi">1</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Final Log Likelihood:&quot;</span><span class="p">,</span><span class="n">logLikelihood</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Effective cluster size:&quot;</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">Nk</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">m</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">logLikelihood</span>
+
+<span class="k">def</span> <span class="nf">confidence_ellipse</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">cov</span><span class="p">,</span> <span class="n">n_std</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a plot of the covariance confidence ellipse of `x` and `y`</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cov : Covariance matrix</span>
+<span class="sd">        Input data.</span>
+
+<span class="sd">    ax : matplotlib.axes.Axes</span>
+<span class="sd">        The axes object to draw the ellipse into.</span>
+
+<span class="sd">    n_std : float</span>
+<span class="sd">        The number of standard deviations to determine the ellipse&#39;s radiuses.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    matplotlib.patches.Ellipse</span>
+
+<span class="sd">    Other parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    kwargs : `~matplotlib.patches.Patch` properties</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<span class="c1">#     if cov != cov.T:</span>
+<span class="c1">#         raise ValueError(&quot;Not a valid covariance matrix&quot;)</span>
+
+<span class="c1">#     cov = np.cov(x, y)</span>
+    <span class="n">pearson</span> <span class="o">=</span> <span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+    <span class="c1"># Using a special case to obtain the eigenvalues of this</span>
+    <span class="c1"># two-dimensionl dataset.</span>
+    <span class="n">ell_radius_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">pearson</span><span class="p">)</span>
+    <span class="n">ell_radius_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">pearson</span><span class="p">)</span>
+    <span class="n">ellipse</span> <span class="o">=</span> <span class="n">Ellipse</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+        <span class="n">width</span><span class="o">=</span><span class="n">ell_radius_x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">height</span><span class="o">=</span><span class="n">ell_radius_y</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># Calculating the stdandard deviation of x from</span>
+    <span class="c1"># the squareroot of the variance and multiplying</span>
+    <span class="c1"># with the given number of standard deviations.</span>
+    <span class="n">scale_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cov</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">n_std</span>
+    <span class="n">mean_x</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># calculating the stdandard deviation of y ...</span>
+    <span class="n">scale_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">cov</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="n">n_std</span>
+    <span class="n">mean_y</span> <span class="o">=</span> <span class="n">mu</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">transf</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span> \
+        <span class="o">.</span><span class="n">rotate_deg</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">scale</span><span class="p">(</span><span class="n">scale_x</span><span class="p">,</span> <span class="n">scale_y</span><span class="p">)</span> \
+        <span class="o">.</span><span class="n">translate</span><span class="p">(</span><span class="n">mean_x</span><span class="p">,</span> <span class="n">mean_y</span><span class="p">)</span>
+
+    <span class="n">ellipse</span><span class="o">.</span><span class="n">set_transform</span><span class="p">(</span><span class="n">transf</span> <span class="o">+</span> <span class="n">ax</span><span class="o">.</span><span class="n">transData</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">ellipse</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">alpha</span><span class="p">,</span><span class="n">logLikelihood</span> <span class="o">=</span> <span class="n">VariationalGMM</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">m_init</span><span class="p">,</span><span class="n">beta_init</span><span class="p">,</span><span class="n">W_init</span><span class="p">,</span><span class="n">nu_init</span><span class="p">,</span><span class="n">alpha_init</span><span class="p">)</span><span class="c1">#,max_iter=1000)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="determining-optimal-number-of-clusters">
+<h3>Determining optimal number of clusters<a class="headerlink" href="#determining-optimal-number-of-clusters" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k_idx</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">dist_tol</span> <span class="o">=</span> <span class="mf">1E-6</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">getZ</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">beta</span><span class="p">,</span><span class="n">W</span><span class="p">,</span><span class="n">nu</span><span class="p">,</span><span class="n">alpha</span><span class="p">)</span>
+<span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span> <span class="o">=</span> <span class="n">getHelperVariables</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+<span class="n">m_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">beta_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">alpha_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">W_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">nu_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">N_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">x_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">S_final</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">dist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">m</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span><span class="o">-</span><span class="n">m_init</span><span class="p">[:,</span><span class="n">k</span><span class="p">])</span>
+    <span class="k">if</span> <span class="n">dist</span> <span class="o">&gt;=</span> <span class="mf">1E-6</span> <span class="ow">and</span> <span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span><span class="c1">#0.01*data.shape[1]:</span>
+        <span class="k">if</span> <span class="n">m_final</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">m_final</span> <span class="o">=</span> <span class="n">m</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">beta_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">beta</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+            <span class="n">alpha_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">alpha</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+            <span class="n">nu_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">nu</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+            <span class="n">W_final</span> <span class="o">=</span> <span class="p">[</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+            <span class="n">N_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]])</span>
+            <span class="n">x_final</span> <span class="o">=</span> <span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span>
+            <span class="n">S_final</span> <span class="o">=</span> <span class="p">[</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">m_final</span><span class="p">,</span><span class="n">m</span><span class="p">[:,</span><span class="n">k</span><span class="p">]]</span>
+            <span class="n">beta_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">beta_final</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">beta</span><span class="p">[</span><span class="n">k</span><span class="p">]]))</span>
+            <span class="n">alpha_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">alpha_final</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">alpha</span><span class="p">[</span><span class="n">k</span><span class="p">]]))</span>
+            <span class="n">nu_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nu_final</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">nu</span><span class="p">[</span><span class="n">k</span><span class="p">]]))</span>
+            <span class="n">W_final</span> <span class="o">+=</span> <span class="p">[</span><span class="n">W</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+            <span class="n">N_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">N_final</span><span class="p">,</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">Nk</span><span class="p">[</span><span class="n">k</span><span class="p">]]))</span>
+            <span class="n">x_final</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">x_final</span><span class="p">,</span><span class="n">x</span><span class="p">[:,</span><span class="n">k</span><span class="p">]]</span>
+            <span class="n">S_final</span> <span class="o">+=</span> <span class="p">[</span><span class="n">S</span><span class="p">[</span><span class="n">k</span><span class="p">]]</span>
+
+<span class="n">K_final</span> <span class="o">=</span> <span class="n">x_final</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Number of actual clusters:&quot;</span><span class="p">,</span><span class="n">K_final</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cluster Means:&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">x_final</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cluster Covariance&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K_final</span><span class="p">):</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">S_final</span><span class="p">[</span><span class="n">k</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of actual clusters: 4
+
+Cluster Means:
+[[189.3128161  216.55057185 182.07307154 196.19772708]
+ [ 38.75547148  47.27299022  56.98587604  49.06080624]]
+
+Cluster Covariance
+[[35.94386692  3.55981486]
+ [ 3.55981486  6.92690337]]
+[[47.61652171 15.77126996]
+ [15.77126996 10.59665065]]
+[[17.21662508 -7.1001078 ]
+ [-7.1001078   8.94857704]]
+[[35.18552793 10.10415175]
+ [10.10415175  7.84172856]]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">K_final</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">getZ</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">m_final</span><span class="p">,</span><span class="n">beta_final</span><span class="p">,</span><span class="n">W_final</span><span class="p">,</span><span class="n">nu_final</span><span class="p">,</span><span class="n">alpha_final</span><span class="p">)</span>
+<span class="n">Nk</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">S</span> <span class="o">=</span> <span class="n">getHelperVariables</span><span class="p">(</span><span class="n">data</span><span class="p">,</span><span class="n">r</span><span class="p">)</span>
+<span class="n">Nk</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">r</span><span class="p">,</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+        <span class="n">rgb</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">+</span><span class="n">r</span><span class="p">[</span><span class="n">n</span><span class="p">,(</span><span class="n">k</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="k">K</span>]*np.array(mcolors.to_rgb(color[k]))
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">n</span><span class="p">],</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">n</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="n">rgb</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Classification as a function of responsibilities&#39;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">df_data</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;Flipper Length (mm)&#39;</span><span class="p">],</span><span class="n">df_data</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="s1">&#39;Culmen Length (mm)&#39;</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">K</span><span class="p">):</span>
+    <span class="n">ki</span> <span class="o">=</span> <span class="p">(</span><span class="n">k</span><span class="o">+</span><span class="mi">2</span><span class="p">)</span><span class="o">%</span><span class="k">K</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_final</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="n">ki</span><span class="p">],</span><span class="n">x_final</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="n">ki</span><span class="p">],</span><span class="s1">&#39;kx&#39;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+        <span class="n">confidence_ellipse</span><span class="p">(</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">x_final</span><span class="p">[:,</span><span class="n">ki</span><span class="p">],</span><span class="n">S_final</span><span class="p">[</span><span class="n">ki</span><span class="p">],</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">,</span><span class="n">edgecolor</span><span class="o">=</span><span class="n">color</span><span class="p">[</span><span class="n">k</span><span class="p">],</span><span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+        
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Variational Approximation&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Flipper Length (mm)&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Culmen Length (mm)&#39;</span><span class="p">);</span>
+
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">logLikelihood</span><span class="p">)),</span><span class="n">logLikelihood</span><span class="p">);</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Learning curve&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Log Likehood&#39;</span><span class="p">);</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Iteration Number&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/VariationalGMM_16_0.png" src="_images/VariationalGMM_16_0.png" />
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="references">
+<h2>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h2>
+<p>[1]: Bishop, Christopher M. 2006. Pattern Recognition and Machine Learning. Springer.</p>
+<p>[2]: Horst AM, Hill AP, Gorman KB (2020). palmerpenguins: Palmer Archipelago (Antarctica) penguin data. R package version 0.1.0. <a class="reference external" href="https://allisonhorst.github.io/palmerpenguins/">https://allisonhorst.github.io/palmerpenguins/</a>.</p>
+<p>[3]: CSV data downloaded from <a class="reference external" href="https://github.com/mcnakhaee/palmerpenguins">https://github.com/mcnakhaee/palmerpenguins</a></p>
+<p>[4]: Code for plotting confidence ellipses from <a class="reference external" href="https://matplotlib.org/3.1.0/gallery/statistics/confidence_ellipse.html">https://matplotlib.org/3.1.0/gallery/statistics/confidence_ellipse.html</a></p>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        </div>
+    </div>
+    
+    
+    <div class='prev-next-bottom'>
+        
+    <a class='left-prev' id="prev-link" href="VariationalInference.html" title="previous page">Variational Inference</a>
+    <a class='right-next' id="next-link" href="DynamicalSystems.html" title="next page">Dynamical Systems</a>
+
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Chandrasekar Sureshkumar<br/>
+        
+            &copy; Copyright 2020.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+
+    
+  <script src="_static/js/index.d3f166471bb80abb5163.js"></script>
+
+
+    
+  </body>
+</html>
