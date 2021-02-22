@@ -1,14 +1,14 @@
 # Table of content
 # Learn more at https://jupyterbook.org/customize/toc.html
 #
-- file: Intro
-- file: DensityEstimation
+- file: ./files/Intro
+- file: ./files/DensityEstimation/DensityEstimation
   sections:
-    - file: LaplaceApproximation
-    - file: GaussianMixtureModels
-    - file: EMAlgorithm
-    - file: VariationalInference
-    - file: VariationalGMM
-- file: DynamicalSystems
+    - file: ./files/DensityEstimation/LaplaceApproximation
+    - file: ./files/DensityEstimation/GaussianMixtureModels
+    - file: ./files/DensityEstimation/EMAlgorithm
+    - file: ./files/DensityEstimation/VariationalInference
+    - file: ./files/DensityEstimation/VariationalGMM
+- file: ./files/DynamicalSystems/DynamicalSystems
   sections:
-    - file: LinearSystemIdentification_EM
+    - file: ./files/DynamicalSystems/LinearSystemIdentification_EM
