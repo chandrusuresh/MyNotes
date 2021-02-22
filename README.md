@@ -1,2 +1,0 @@
-# MyNotes
-My technical space
