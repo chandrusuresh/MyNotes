@@ -316,7 +316,7 @@ where <span class="math notranslate nohighlight">\(M\)</span> denotes the number
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<p>This is an example to demonstrate the variational approximation  and adapted from Figure 4.14 in [1]. This is also the same example used to demonstrate the Laplace approximation.</p>
+<p>This is an example to demonstrate the variational approximation  and adapted from Figure 4.14 in [1]. This is also the same example used to demonstrate the <a class="reference external" href="https://chandrusuresh.github.io/MyNotes/files/DensityEstimation/LaplaceApproximation.html">Laplace approximation</a>.</p>
 <p>Suppose <span class="math notranslate nohighlight">\(p(z) \propto \sigma(20z+4) \exp{\left(\frac{-z^2}{2}\right)}\)</span> where <span class="math notranslate nohighlight">\(\sigma(\cdot)\)</span> is the sigmoid function. This form is very common in classification problems and serves as a good practical example.</p>
 <p>This is a distribution on a scalar random variable <span class="math notranslate nohighlight">\(z\)</span> and we seek to approximate it with a Gaussian. The parameters for Gaussian distributions will be determined by variational approximation. To initialize, we introduce conjugate prior distributions for the mean <span class="math notranslate nohighlight">\(\mu\)</span> and precision <span class="math notranslate nohighlight">\(\tau\)</span> given by:</p>
 <div class="math notranslate nohighlight">
@@ -496,10 +496,10 @@ b_N &amp;= b_0 + \frac{1}{2}\mathbb{E}_{\mu}\left[ \sum_{n=1}^N (x_n-\mu)^2 + \l
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converged after Iteration:6
-mu_opt     =  0.6689014901490151
-lambda_opt =  24538.787245636388
+mu_opt     =  0.668034403440344
+lambda_opt =  24551.586049606438
 a_opt      =  5000.0
-b_opt      =  2037.5905092412931
+b_opt      =  2036.5283081498314
 </pre></div>
 </div>
 </div>

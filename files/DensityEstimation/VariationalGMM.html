@@ -318,7 +318,7 @@
                 
   <div class="section" id="variational-mixture-of-gaussians">
 <h1>Variational Mixture of Gaussians<a class="headerlink" href="#variational-mixture-of-gaussians" title="Permalink to this headline">¶</a></h1>
-<p>Gaussian mixture models are widely used to model complex intractable probability distributions using a mixture of Gaussians. We have reviewed GMM and applied a Maximum Likelihood approach to fit a GMM to the Palmer Penguins dataset using the EM algorithm.</p>
+<p>Gaussian mixture models are widely used to model complex intractable probability distributions using a mixture of Gaussians. In a <a class="reference external" href="https://chandrusuresh.github.io/MyNotes/files/DensityEstimation/GaussianMixtureModels.html">previous post</a>, GMMs were discussed together with a Maximum Likelihood approach to fit a GMM to the Palmer Penguins dataset using the EM algorithm.</p>
 <p>Here we descrive the variational inference algorithm to the same dataset. The following plate model is assumed for the variational approximation.
 The following plate model in Fig 10.5 from [1] is assumed.</p>
 <p><img alt="image.png" src="../../_images/GMM_VA_GraphicalModel.png" /></p>
@@ -425,7 +425,7 @@ W_k^{-1} &amp;= W_0^{-1} + N_k S_k + \frac{\beta_0 N_k}{\beta_0+N_k}(\bar{x}_k-m
 </div>
 <div class="section" id="example">
 <h2>Example<a class="headerlink" href="#example" title="Permalink to this headline">¶</a></h2>
-<p>The palmer penguins dataset released by [2] and obtained from [3] is used as an example. Two features - Flipper Length &amp; Culmen Length are used as the features to cluster the dataset. We set K = 6 and demonstrate that 3 of these components are redundant while correctly identifying the 3 correct categories of penguins - Adelie, Chinstrap and Gentoo. This same dataset was used in the GMM section. The dataset is plotted below.</p>
+<p>The palmer penguins dataset released by [2] and obtained from [3] is used as an example. Two features - Flipper Length &amp; Culmen Length are used as the features to cluster the dataset. We set K = 6 and demonstrate that 3 of these components are redundant while correctly identifying the 3 correct categories of penguins - Adelie, Chinstrap and Gentoo. This same dataset was used in the GMM section. The dataset is plotted below. This is the same dataset used to demonstrate <a class="reference external" href="https://chandrusuresh.github.io/MyNotes/files/DensityEstimation/GaussianMixtureModels.html">Gaussian Mixture Models using the EM algorithm</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
