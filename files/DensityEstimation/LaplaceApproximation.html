@@ -7,55 +7,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Laplace Approximation &#8212; My Machine Learning Notes</title>
     
-  <link rel="stylesheet" href="_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
+  <link rel="stylesheet" href="../../_static/css/index.f658d18f9b420779cfdf24aa0a7e2d77.css">
 
     
   <link rel="stylesheet"
-    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+    href="../../_static/vendor/fontawesome/5.13.0/css/all.min.css">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
   <link rel="preload" as="font" type="font/woff2" crossorigin
-    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+    href="../../_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
 
     
       
   <link rel="stylesheet"
-    href="_static/vendor/open-sans_all/1.44.1/index.css">
+    href="../../_static/vendor/open-sans_all/1.44.1/index.css">
   <link rel="stylesheet"
-    href="_static/vendor/lato_latin-ext/1.44.1/index.css">
+    href="../../_static/vendor/lato_latin-ext/1.44.1/index.css">
 
     
-    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
-    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
-    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/sphinx-book-theme.40e2e510f6b7d1648584402491bb10fe.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="../../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
     
-  <link rel="preload" as="script" href="_static/js/index.d3f166471bb80abb5163.js">
+  <link rel="preload" as="script" href="../../_static/js/index.d3f166471bb80abb5163.js">
 
-    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script src="_static/jquery.js"></script>
-    <script src="_static/underscore.js"></script>
-    <script src="_static/doctools.js"></script>
-    <script src="_static/togglebutton.js"></script>
-    <script src="_static/clipboard.min.js"></script>
-    <script src="_static/copybutton.js"></script>
+    <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script src="../../_static/jquery.js"></script>
+    <script src="../../_static/underscore.js"></script>
+    <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/togglebutton.js"></script>
+    <script src="../../_static/clipboard.min.js"></script>
+    <script src="../../_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
-    <script src="_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
+    <script src="../../_static/sphinx-book-theme.d31b09fe5c1d09cb49b26a786de4a05d.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
         const thebe_selector_input = "pre"
         const thebe_selector_output = ".output"
     </script>
-    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="../../_static/sphinx-thebe.js"></script>
     <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
-    <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="search.html" />
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
     <link rel="next" title="Gaussian Mixture Models" href="GaussianMixtureModels.html" />
     <link rel="prev" title="Density Estimation" href="DensityEstimation.html" />
 
@@ -74,20 +74,20 @@
 <div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
     
         <div class="navbar-brand-box">
-<a class="navbar-brand text-wrap" href="index.html">
+<a class="navbar-brand text-wrap" href="../../index.html">
   
   
   <h1 class="site-logo" id="site-title">My Machine Learning Notes</h1>
   
 </a>
-</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+</div><form class="bd-search d-flex align-items-center" action="../../search.html" method="get">
   <i class="icon fas fa-search"></i>
   <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
 </form>
 <nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
     <ul class="nav sidenav_l1">
  <li class="toctree-l1">
-  <a class="reference internal" href="Intro.html">
+  <a class="reference internal" href="../../Intro.html">
    Welcome to my technical space
   </a>
  </li>
@@ -128,12 +128,12 @@
   </i>
  </li>
  <li class="toctree-l1 collapsible-parent">
-  <a class="reference internal" href="DynamicalSystems.html">
+  <a class="reference internal" href="../DynamicalSystems/DynamicalSystems.html">
    Dynamical Systems
   </a>
   <ul class="collapse-ul">
    <li class="toctree-l2">
-    <a class="reference internal" href="LinearSystemIdentification_EM.html">
+    <a class="reference internal" href="../DynamicalSystems/LinearSystemIdentification_EM.html">
      Parameter Estimation for Linear Dynamical Systems
     </a>
    </li>
@@ -181,7 +181,7 @@
         <!-- ipynb file if we had a myst markdown file -->
         
         <!-- Download raw file -->
-        <a class="dropdown-buttons" href="_sources/LaplaceApproximation.ipynb"><button type="button"
+        <a class="dropdown-buttons" href="../../_sources/files/DensityEstimation/LaplaceApproximation.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
                 data-placement="left">.ipynb</button></a>
         <!-- Download PDF via print -->
@@ -201,7 +201,7 @@
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/chandrusuresh/MyNotes/issues/new?title=Issue%20on%20page%20%2FLaplaceApproximation.html&body=Your%20issue%20content%20here."><button
+            href="https://github.com/chandrusuresh/MyNotes/issues/new?title=Issue%20on%20page%20%2Ffiles/DensityEstimation/LaplaceApproximation.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -222,10 +222,10 @@
         aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
     <div class="dropdown-buttons">
         
-        <a class="binder-button" href="https://mybinder.org/v2/gh/chandrusuresh/MyNotes/master?urlpath=tree/./(root)/LaplaceApproximation.ipynb"><button type="button"
+        <a class="binder-button" href="https://mybinder.org/v2/gh/chandrusuresh/MyNotes/master?urlpath=tree/./(root)/files/DensityEstimation/LaplaceApproximation.ipynb"><button type="button"
                 class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
                 data-placement="left"><img class="binder-button-logo"
-                    src="_static/images/logo_binder.svg"
+                    src="../../_static/images/logo_binder.svg"
                     alt="Interact on binder">Binder</button></a>
         
         
@@ -273,7 +273,7 @@
   <div class="section" id="the-laplace-approximation">
 <h1>The Laplace Approximation<a class="headerlink" href="#the-laplace-approximation" title="Permalink to this headline">¶</a></h1>
 <p>The laplace approximation is a widely used framework that finds a Gaussian approximation to a probability density definted over a set of continuous variables. It is especially useful when applying Bayesian principles to logistic regression where computing integral of posterior distributions becomes intractable.</p>
-<p><img alt="Laplace Approximation" src="../../img/LaplaceApproximation.png" /></p>
+<p><img alt="Laplace Approximation" src="../../_images/LaplaceApproximation.png" /></p>
 <div class="section" id="basic-idea">
 <h2>Basic Idea<a class="headerlink" href="#basic-idea" title="Permalink to this headline">¶</a></h2>
 <p>Consider a continuous random variable <span class="math notranslate nohighlight">\(z \in \mathcal{R}^D\)</span> with probability distribution given by <span class="math notranslate nohighlight">\(p(z) = \frac{1}{Z}f(z)\)</span> where <span class="math notranslate nohighlight">\(Z = \int{f(z) dz}\)</span> is the normalizing constant and need not be known.</p>
@@ -380,7 +380,7 @@ Let <span class="math notranslate nohighlight">\(y(z_0) = z_0 - 20(1-\sigma(20 z
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/LaplaceApproximation_3_0.png" src="_images/LaplaceApproximation_3_0.png" />
+<img alt="../../_images/LaplaceApproximation_3_0.png" src="../../_images/LaplaceApproximation_3_0.png" />
 </div>
 </div>
 </div>
@@ -403,7 +403,7 @@ Let <span class="math notranslate nohighlight">\(y(z_0) = z_0 - 20(1-\sigma(20 z
         },
         kernelOptions: {
             kernelName: "python3",
-            path: "./."
+            path: "./files\DensityEstimation"
         },
         predefinedOutput: true
     }
@@ -439,7 +439,7 @@ Let <span class="math notranslate nohighlight">\(y(z_0) = z_0 - 20(1-\sigma(20 z
     </div>
 
     
-  <script src="_static/js/index.d3f166471bb80abb5163.js"></script>
+  <script src="../../_static/js/index.d3f166471bb80abb5163.js"></script>
 
 
     
