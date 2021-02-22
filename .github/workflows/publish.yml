@@ -36,7 +36,7 @@ jobs:
 
     # Push the book's HTML to github-pages
     - name: GitHub Pages action
-      uses: chandrusuresh/MyNotes
+      uses: chandrusuresh/MyNotes@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./_build/html
